@@ -32,7 +32,18 @@ export async function updateSession(request: NextRequest) {
   );
 
   // refreshing the auth token
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const isDashboard = request.nextUrl.pathname.startsWith("/home")
+
+  // 🔒 BELUM LOGIN → REDIRECT
+  if (!user && isDashboard) {
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = "/"
+    return NextResponse.redirect(loginUrl)
+  }
 
   return supabaseResponse
 

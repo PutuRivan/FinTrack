@@ -1,8 +1,10 @@
-import { Wallet } from "lucide-react";
+import { Github, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import LoginForm from "@/components/forms/login-form";
-import RegisterForm from "@/components/forms/register-form";
+import LoginForm from "@/components/forms/signin-form";
+import SignUpForm from "@/components/forms/signup-form";
+import OAuthContainer from "@/components/oauth-container";
+import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function AuthPage() {
@@ -37,9 +39,11 @@ export default function AuthPage() {
             <div className="mt-8">
               <TabsContent value="login">
                 <LoginForm />
+                <OAuthContainer />
               </TabsContent>
               <TabsContent value="register">
-                <RegisterForm />
+                <SignUpForm />
+                <OAuthContainer />
               </TabsContent>
             </div>
           </Tabs>
