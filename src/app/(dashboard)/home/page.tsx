@@ -1,19 +1,25 @@
-import ChartContainer from "@/components/dashboard/home/chart-container"
-import RecentTransactionContainer from "@/components/dashboard/home/recent-transaction-container"
-import SavingGoalContainer from "@/components/dashboard/home/saving-goal-container"
-import StatsCard from "@/components/stats-card"
-import { Button } from "@/components/ui/button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CreditCard, DollarSign, Wallet, Plus, MoreHorizontal } from "lucide-react"
+import { CreditCard, DollarSign, Plus, Wallet } from "lucide-react";
+import ChartContainer from "@/components/dashboard/home/chart-container";
+import RecentTransactionContainer from "@/components/dashboard/home/recent-transaction-container";
+import SavingGoalContainer from "@/components/dashboard/home/saving-goal-container";
+import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
+import StatsCard from "@/components/stats-card";
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function HomePage() {
   return (
     <div className="flex flex-col gap-6 p-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Welcome back, Alex</h1>
-          <p className="text-muted-foreground">Here is your financial overview for today.</p>
-        </div>
+      <SidebarHeaderContent
+        title="Welcome back, Alex"
+        description="Here is your financial overview for today."
+      >
         <div className="flex items-center gap-2">
           <Select defaultValue="oct2023">
             <SelectTrigger className="w-35 bg-background">
@@ -29,7 +35,7 @@ export default function HomePage() {
             <Plus className="mr-2 h-4 w-4" /> Add Transaction
           </Button>
         </div>
-      </div>
+      </SidebarHeaderContent>
 
       <div className="grid gap-6 md:grid-cols-3">
         <StatsCard
@@ -71,5 +77,5 @@ export default function HomePage() {
 
       <SavingGoalContainer />
     </div>
-  )
+  );
 }

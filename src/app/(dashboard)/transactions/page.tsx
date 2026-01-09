@@ -1,17 +1,13 @@
 "use client";
 
-import {
-  Briefcase,
-  Film,
-  Music,
-  Plus,
-  ShoppingCart,
-  Zap,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import StatsCard from "@/components/stats-card";
+import { Briefcase, Film, Music, Plus, ShoppingCart, Zap } from "lucide-react";
 import TransactionFilterContainer from "@/components/dashboard/transactions/transactions-filter-container";
-import TransactionTableContainer, { Transaction } from "@/components/dashboard/transactions/transactions-table-container";
+import TransactionTableContainer, {
+  type Transaction,
+} from "@/components/dashboard/transactions/transactions-table-container";
+import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
+import StatsCard from "@/components/stats-card";
+import { Button } from "@/components/ui/button";
 
 const data: Transaction[] = [
   {
@@ -74,17 +70,14 @@ const data: Transaction[] = [
 export default function TransactionsPage() {
   return (
     <div className="flex flex-col gap-6 p-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Transactions</h1>
-          <p className="text-muted-foreground">
-            View and manage your financial history
-          </p>
-        </div>
+      <SidebarHeaderContent
+        title="Transactions"
+        description="View and manage your financial history"
+      >
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Add Transaction
         </Button>
-      </div>
+      </SidebarHeaderContent>
 
       {/* Summary Cards */}
       <div className="grid gap-6 md:grid-cols-3">

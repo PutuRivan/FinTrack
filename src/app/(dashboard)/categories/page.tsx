@@ -1,30 +1,28 @@
-"use client";
-
 import {
+  Briefcase,
+  Bus,
+  Film,
+  Home,
+  LayoutGrid,
+  MoreHorizontal,
   Plus,
   Search,
-  Wallet,
-  Utensils,
-  Bus,
-  Briefcase,
-  Home,
-  Film,
-  MoreHorizontal,
-  LayoutGrid,
+  TrendingDown,
   TrendingUp,
-  TrendingDown
+  Utensils,
+  Wallet,
 } from "lucide-react";
+import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -33,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Define Types
 type CategoryType = "Income" | "Expense";
@@ -107,27 +105,16 @@ const categories: Category[] = [
 ];
 
 export default function CategoriesPage() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="flex flex-col gap-6 p-6 min-h-screen bg-muted/20">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Categories</h1>
-          <p className="text-muted-foreground">
-            Manage your income and expense categories.
-          </p>
-        </div>
+      <SidebarHeaderContent
+        title="Categories"
+        description="Manage your income and expense categories."
+      >
         <Button>
           <Plus className="mr-2 h-4 w-4" /> Add Category
         </Button>
-      </div>
+      </SidebarHeaderContent>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -135,7 +122,9 @@ export default function CategoriesPage() {
           <CardContent className="p-6">
             <div className="flex items-center gap-2 text-muted-foreground mb-2">
               <LayoutGrid className="h-4 w-4" />
-              <span className="text-xs font-bold tracking-wider uppercase">Total Categories</span>
+              <span className="text-xs font-bold tracking-wider uppercase">
+                Total Categories
+              </span>
             </div>
             <div className="text-3xl font-bold text-foreground">12</div>
           </CardContent>
@@ -145,7 +134,9 @@ export default function CategoriesPage() {
           <CardContent className="p-6">
             <div className="flex items-center gap-2 text-green-600 mb-2">
               <TrendingUp className="h-4 w-4" />
-              <span className="text-xs font-bold tracking-wider uppercase">Income Types</span>
+              <span className="text-xs font-bold tracking-wider uppercase">
+                Income Types
+              </span>
             </div>
             <div className="text-3xl font-bold text-foreground">3</div>
           </CardContent>
@@ -155,7 +146,9 @@ export default function CategoriesPage() {
           <CardContent className="p-6">
             <div className="flex items-center gap-2 text-red-500 mb-2">
               <TrendingDown className="h-4 w-4" />
-              <span className="text-xs font-bold tracking-wider uppercase">Expense Types</span>
+              <span className="text-xs font-bold tracking-wider uppercase">
+                Expense Types
+              </span>
             </div>
             <div className="text-3xl font-bold text-foreground">9</div>
           </CardContent>
