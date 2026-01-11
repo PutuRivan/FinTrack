@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation"
 import { createClient } from "../supabase/server"
+import { TFormState } from "../types"
 
 
 export async function signUp(formData: FormData) {
@@ -84,11 +85,45 @@ export async function signInWithGoogle() {
   }
 }
 
-
-export async function getUser() {
+export async function createCategory(
+  prevState: TFormState,
+  formData: FormData
+): Promise<TFormState> {
   const supabase = await createClient()
 
-  const { data, error } = await supabase.auth.getUser()
+  const name = formData.get("name")?.toString()
+  const type = formData.get("type")?.toString()
+  const icon = formData.get("icon")?.toString()
+  const color = formData.get("color")?.toString()
+
+
+  console.log(icon, color)
+
+  if (!name || !type) {
+    return {
+      success: false,
+      message: "Name and type are required",
+    }
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    }
+  }
+
+  const { error } = await supabase.from("categories").insert({
+    name,
+    type,
+    icon: icon,
+    color: color,
+    user_id: user.id,
+  })
 
   if (error) {
     return {
@@ -99,6 +134,6 @@ export async function getUser() {
 
   return {
     success: true,
-    data,
+    message: "Category created successfully",
   }
 }

@@ -36,15 +36,16 @@ import {
   Tv,
   Users,
   Utensils,
-  Wallet, Wifi,
+  Wallet,
+  Wifi,
   Wrench,
   Zap
 } from "lucide-react";
 
 export const iconMap: Record<string, { icon: LucideIcon; label: string }> = {
   // Income
-  wallet: { icon: Wallet, label: "Wallet" },
-  "trending-up": { icon: TrendingUp, label: "Income" },
+  Wallet: { icon: Wallet, label: "Wallet" },
+  "TrendingUp": { icon: TrendingUp, label: "Income" },
   gift: { icon: Gift, label: "Bonus / Gift" },
   briefcase: { icon: Briefcase, label: "Freelance / Work" },
   "piggy-bank": { icon: PiggyBank, label: "Savings" },

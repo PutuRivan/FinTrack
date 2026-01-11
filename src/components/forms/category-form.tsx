@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useFormState } from "react-dom";
+import { createCategory } from "@/lib/actions";
 import { iconMap } from "@/lib/types/map";
 import { Button } from "../ui/button";
-import { Field, FieldGroup, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -13,24 +15,32 @@ import {
   SelectValue,
 } from "../ui/select";
 
-// Icon mapping
-
 export default function CategoryForm() {
   const [selectedIcon, setSelectedIcon] = useState<string>("");
-  const [selectedColor, setSelectedColor] = useState<string>("#3b82f6");
+  const [selectedColor, setSelectedColor] = useState<string>("#2563eb");
+  const [state, action] = useFormState(createCategory, {
+    success: false,
+    message: "",
+  });
 
   return (
-    <form>
+    <form action={action}>
       <FieldGroup>
         {/* Name */}
         <Field>
           <FieldLabel htmlFor="name">Name</FieldLabel>
-          <Input id="name" type="text" placeholder="Enter Name" />
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter Name"
+            required
+          />
         </Field>
         {/* Type */}
         <Field>
           <FieldLabel htmlFor="type">Type</FieldLabel>
-          <Select>
+          <Select name="type" required>
             <SelectTrigger>
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
@@ -43,7 +53,12 @@ export default function CategoryForm() {
         {/* Icon */}
         <Field>
           <FieldLabel htmlFor="icon">Icon</FieldLabel>
-          <Select value={selectedIcon} onValueChange={setSelectedIcon}>
+          <input type="hidden" name="icon" value={selectedIcon} />
+          <Select
+            value={selectedIcon}
+            onValueChange={setSelectedIcon}
+            required
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select an icon">
                 {selectedIcon && iconMap[selectedIcon] && (
@@ -79,6 +94,7 @@ export default function CategoryForm() {
         {/* Color */}
         <Field>
           <FieldLabel htmlFor="color">Color</FieldLabel>
+          <input type="hidden" name="color" value={selectedColor} />
           <div className="flex items-center gap-3">
             <Input
               id="color"
@@ -96,6 +112,13 @@ export default function CategoryForm() {
             />
           </div>
         </Field>
+
+        {state.success ? (
+          <p className="text-green-500">{state.message}</p>
+        ) : (
+          <p className="text-red-500">{state.message}</p>
+        )}
+
         <Button type="submit">Submit</Button>
       </FieldGroup>
     </form>

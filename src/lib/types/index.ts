@@ -70,3 +70,8 @@ export type TFinancialGoal = {
   status: TFinancialGoalStatus
   created_at: string
 }
+
+export type TFormState = {
+  success: boolean
+  message: string
+}
