@@ -11,11 +11,11 @@ export default function ChartContainer() {
         </div>
         <div className="flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full bg-blue-500" />
+            <div className="h-3 w-3 rounded-full bg-chart-1" />
             <span>Income</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full bg-slate-200" />
+            <div className="h-3 w-3 rounded-full bg-chart-2" />
             <span>Expense</span>
           </div>
         </div>

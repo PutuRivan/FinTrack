@@ -1,17 +1,9 @@
-import { CreditCard, DollarSign, Plus, Wallet } from "lucide-react";
+import { CreditCard, DollarSign, Wallet } from "lucide-react";
 import ChartContainer from "@/components/dashboard/home/chart-container";
 import RecentTransactionContainer from "@/components/dashboard/home/recent-transaction-container";
 import SavingGoalContainer from "@/components/dashboard/home/saving-goal-container";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import StatsCard from "@/components/stats-card";
-import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export default function HomePage() {
   return (
@@ -19,23 +11,7 @@ export default function HomePage() {
       <SidebarHeaderContent
         title="Welcome back, Alex"
         description="Here is your financial overview for today."
-      >
-        <div className="flex items-center gap-2">
-          <Select defaultValue="oct2023">
-            <SelectTrigger className="w-35 bg-background">
-              <SelectValue placeholder="Select Month" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="oct2023">Oct 2023</SelectItem>
-              <SelectItem value="sep2023">Sep 2023</SelectItem>
-              <SelectItem value="aug2023">Aug 2023</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button>
-            <Plus className="mr-2 h-4 w-4" /> Add Transaction
-          </Button>
-        </div>
-      </SidebarHeaderContent>
+      />
 
       <div className="grid gap-6 md:grid-cols-3">
         <StatsCard
