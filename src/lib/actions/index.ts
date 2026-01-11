@@ -85,7 +85,7 @@ export async function signInWithGoogle() {
 }
 
 export async function createCategory(
-  prevState: TFormState,
+  _prevState: TFormState,
   formData: FormData,
 ): Promise<TFormState> {
   const supabase = await createClient();
@@ -94,8 +94,6 @@ export async function createCategory(
   const type = formData.get("type")?.toString();
   const icon = formData.get("icon")?.toString();
   const color = formData.get("color")?.toString();
-
-  console.log(icon, color);
 
   if (!name || !type) {
     return {
@@ -134,4 +132,59 @@ export async function createCategory(
     success: true,
     message: "Category created successfully",
   };
+}
+
+export async function createTransaction(
+  _prevState: TFormState,
+  formData: FormData): Promise<TFormState> {
+  const supabase = await createClient();
+
+  const type = formData.get("type")?.toString();
+  const amount = formData.get("amount")?.toString();
+  const category = formData.get("category")?.toString();
+  const date = formData.get("date")?.toString();
+  const description = formData.get("description")?.toString();
+
+  console.log({ type, amount, category, date, description });
+
+  if (!type || !amount || !category || !date || !description) {
+    return {
+      success: false,
+      message: "All fields are required",
+    };
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    };
+  }
+
+  const { error } = await supabase
+    .from("transactions")
+    .insert({
+      type,
+      amount,
+      category_id: category,
+      date,
+      description,
+      user_id: user.id,
+    });
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Transaction created successfully",
+  }
 }

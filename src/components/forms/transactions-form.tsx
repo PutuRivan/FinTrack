@@ -1,15 +1,44 @@
+import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
+import { useCategories } from "@/hooks/use-category";
+import { createTransaction } from "@/lib/actions";
+import { iconMap } from "@/lib/types/map";
+import type { TCategoriesResponse } from "@/lib/types/response";
 import { Button } from "../ui/button";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 export default function TransactionsForm() {
+  const { data } = useCategories();
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("");
+  const [categories, setCategories] = useState<TCategoriesResponse[]>([]);
+  const [state, action] = useFormState(createTransaction, {
+    success: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    if (data) {
+      setCategories(data);
+    }
+  }, [data]);
+
   return (
-    <form>
+    <form action={action}>
       <FieldGroup>
+        {/* Type */}
         <Field>
           <FieldLabel htmlFor="type">Type</FieldLabel>
-          <Select>
+          <input type="hidden" name="type" value={selectedType} />
+          <Select value={selectedType} onValueChange={setSelectedType}>
             <SelectTrigger>
               <SelectValue placeholder="Select a type" />
             </SelectTrigger>
@@ -19,43 +48,69 @@ export default function TransactionsForm() {
             </SelectContent>
           </Select>
         </Field>
+        {/* Amount */}
         <Field>
           <FieldLabel htmlFor="amount">Amount</FieldLabel>
           <Input id="amount" type="number" placeholder="Enter Amount" />
         </Field>
+        {/* Category */}
         <Field>
           <FieldLabel htmlFor="category">Category</FieldLabel>
-          <Select>
+          <input type="hidden" name="category" value={selectedCategory} />
+          <Select value={selectedCategory} onValueChange={setSelectedCategory}>
             <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="food">Food</SelectItem>
-              <SelectItem value="transportation">Transportation</SelectItem>
-              <SelectItem value="healthcare">Healthcare</SelectItem>
-              <SelectItem value="education">Education</SelectItem>
-              <SelectItem value="entertainment">Entertainment</SelectItem>
-              <SelectItem value="shopping">Shopping</SelectItem>
-              <SelectItem value="utilities">Utilities</SelectItem>
-              <SelectItem value="other">Other</SelectItem>
+              {categories.map((category) => {
+                const IconComponent =
+                  category.icon && iconMap[category.icon]
+                    ? iconMap[category.icon].icon
+                    : null;
+                return (
+                  <SelectItem
+                    key={category.id}
+                    value={category.id}
+                    onSelect={() => setSelectedCategory(category.id)}
+                  >
+                    {IconComponent && (
+                      <IconComponent
+                        size={20}
+                        style={{ color: category.color }}
+                      />
+                    )}{" "}
+                    {category.name}
+                  </SelectItem>
+                );
+              })}
             </SelectContent>
           </Select>
         </Field>
+        {/* Date */}
         <Field>
           <FieldLabel htmlFor="date">Date</FieldLabel>
           <Input id="date" type="date" placeholder="Enter Date" />
         </Field>
+        {/* Description */}
         <Field>
           <FieldLabel htmlFor="description">Description</FieldLabel>
           <Input id="description" type="text" placeholder="Enter Description" />
         </Field>
+        {state.success ? (
+          <p className="text-green-500">{state.message}</p>
+        ) : (
+          <p className="text-red-500">{state.message}</p>
+        )}
+        {/* Submit */}
         <Field>
           <div className="flex gap-2 w-full justify-end">
-            <Button type="button" variant="outline">Cancel</Button>
+            <Button type="button" variant="outline">
+              Cancel
+            </Button>
             <Button type="submit">Submit</Button>
           </div>
         </Field>
       </FieldGroup>
     </form>
-  )
+  );
 }
