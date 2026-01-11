@@ -5,13 +5,13 @@ import {
   Home,
   LayoutGrid,
   MoreHorizontal,
-  Plus,
   Search,
   TrendingDown,
   TrendingUp,
   Utensils,
   Wallet,
 } from "lucide-react";
+import CreateDialogCategory from "@/components/create-dialog-category";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -106,14 +106,12 @@ const categories: Category[] = [
 
 export default function CategoriesPage() {
   return (
-    <div className="flex flex-col gap-6 p-6 min-h-screen bg-muted/20">
+    <div className="flex flex-col gap-6 p-6 min-h-screen">
       <SidebarHeaderContent
         title="Categories"
         description="Manage your income and expense categories."
       >
-        <Button>
-          <Plus className="mr-2 h-4 w-4" /> Add Category
-        </Button>
+        <CreateDialogCategory />
       </SidebarHeaderContent>
 
       {/* Stats Cards */}

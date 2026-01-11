@@ -1,6 +1,7 @@
 "use client";
 
 import { Briefcase, Film, Music, Plus, ShoppingCart, Zap } from "lucide-react";
+import CreateDialogTransactions from "@/components/create-dialog-transactions";
 import TransactionFilterContainer from "@/components/dashboard/transactions/transactions-filter-container";
 import TransactionTableContainer, {
   type Transaction,
@@ -74,9 +75,7 @@ export default function TransactionsPage() {
         title="Transactions"
         description="View and manage your financial history"
       >
-        <Button>
-          <Plus className="mr-2 h-4 w-4" /> Add Transaction
-        </Button>
+        <CreateDialogTransactions />
       </SidebarHeaderContent>
 
       {/* Summary Cards */}
