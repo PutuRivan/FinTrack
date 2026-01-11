@@ -1,7 +1,7 @@
 "use client";
 
-import { TUser } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
+import type { TUser } from "@/lib/types/schema";
 
 async function fetchUserProfile(): Promise<TUser> {
   const response = await fetch("/api/users");

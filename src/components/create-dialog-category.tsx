@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import CategoryForm from "./forms/category-form";
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
 
 export default function CreateDialogCategory() {
   return (
@@ -12,6 +12,7 @@ export default function CreateDialogCategory() {
         </Button>
       </DialogTrigger>
       <DialogContent>
+        <DialogTitle>Add Category</DialogTitle>
         <CategoryForm />
       </DialogContent>
     </Dialog>

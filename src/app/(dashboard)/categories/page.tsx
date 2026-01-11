@@ -1,110 +1,29 @@
-import {
-  Briefcase,
-  Bus,
-  Film,
-  Home,
-  LayoutGrid,
-  MoreHorizontal,
-  Search,
-  TrendingDown,
-  TrendingUp,
-  Utensils,
-  Wallet,
-} from "lucide-react";
+"use client";
+
+import { LayoutGrid, Search, TrendingDown, TrendingUp } from "lucide-react";
+import { useMemo } from "react";
 import CreateDialogCategory from "@/components/create-dialog-category";
+import CategoriesTable from "@/components/dashboard/categories/categories-table";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-
-// Define Types
-type CategoryType = "Income" | "Expense";
-
-interface Category {
-  id: string;
-  name: string;
-  type: CategoryType;
-  transactions: number;
-  icon: React.ElementType;
-  color: string; // Tailwind class for icon background
-  iconColor: string; // Tailwind class for icon color
-}
-
-// Mock Data
-const categories: Category[] = [
-  {
-    id: "1",
-    name: "Salary",
-    type: "Income",
-    transactions: 24,
-    icon: Wallet,
-    color: "bg-green-100",
-    iconColor: "text-green-600",
-  },
-  {
-    id: "2",
-    name: "Food & Dining",
-    type: "Expense",
-    transactions: 142,
-    icon: Utensils,
-    color: "bg-orange-100",
-    iconColor: "text-orange-600",
-  },
-  {
-    id: "3",
-    name: "Transportation",
-    type: "Expense",
-    transactions: 58,
-    icon: Bus,
-    color: "bg-blue-100",
-    iconColor: "text-blue-600",
-  },
-  {
-    id: "4",
-    name: "Freelance",
-    type: "Income",
-    transactions: 12,
-    icon: Briefcase,
-    color: "bg-purple-100",
-    iconColor: "text-purple-600",
-  },
-  {
-    id: "5",
-    name: "Housing",
-    type: "Expense",
-    transactions: 12,
-    icon: Home,
-    color: "bg-indigo-100",
-    iconColor: "text-indigo-600",
-  },
-  {
-    id: "6",
-    name: "Entertainment",
-    type: "Expense",
-    transactions: 34,
-    icon: Film,
-    color: "bg-pink-100",
-    iconColor: "text-pink-600",
-  },
-];
+import { useCategories } from "@/hooks/use-category";
 
 export default function CategoriesPage() {
+  const { data: categories, isLoading } = useCategories();
+
+  // Calculate stats from fetched data
+  const stats = useMemo(() => {
+    if (!categories) return { total: 0, income: 0, expense: 0 };
+
+    return {
+      total: categories.length,
+      income: categories.filter((cat) => cat.type === "income").length,
+      expense: categories.filter((cat) => cat.type === "expense").length,
+    };
+  }, [categories]);
+
   return (
     <div className="flex flex-col gap-6 p-6 min-h-screen">
       <SidebarHeaderContent
@@ -124,7 +43,9 @@ export default function CategoriesPage() {
                 Total Categories
               </span>
             </div>
-            <div className="text-3xl font-bold text-foreground">12</div>
+            <div className="text-3xl font-bold text-foreground">
+              {stats.total}
+            </div>
           </CardContent>
         </Card>
 
@@ -136,7 +57,9 @@ export default function CategoriesPage() {
                 Income Types
               </span>
             </div>
-            <div className="text-3xl font-bold text-foreground">3</div>
+            <div className="text-3xl font-bold text-foreground">
+              {stats.income}
+            </div>
           </CardContent>
         </Card>
 
@@ -148,7 +71,9 @@ export default function CategoriesPage() {
                 Expense Types
               </span>
             </div>
-            <div className="text-3xl font-bold text-foreground">9</div>
+            <div className="text-3xl font-bold text-foreground">
+              {stats.expense}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -171,59 +96,8 @@ export default function CategoriesPage() {
         </Tabs>
       </div>
 
-      {/* Categories List */}
-      <Card>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="hover:bg-transparent">
-                <TableHead className="w-[300px]">Category Name</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Transactions</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {categories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell className="font-medium">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`p-2 rounded-lg ${category.color} ${category.iconColor}`}
-                      >
-                        <category.icon className="h-4 w-4" />
-                      </div>
-                      <span>{category.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={category.type === "Income" ? "up" : "down"}>
-                      {category.type}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{category.transactions} Transactions</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit Category</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
-                          Delete Category
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+      {/* Categories Table */}
+      <CategoriesTable data={categories || []} isLoading={isLoading} />
     </div>
   );
 }

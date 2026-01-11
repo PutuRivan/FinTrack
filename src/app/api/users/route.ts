@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getUserById } from "@/lib/queries";
 import { createClient } from "@/lib/supabase/server";
-import type { TUser } from "@/lib/types";
+import type { TUser } from "@/lib/types/schema";
 
 export async function GET() {
   const supabase = await createClient();

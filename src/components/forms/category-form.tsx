@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { createCategory } from "@/lib/actions";
 import { iconMap } from "@/lib/types/map";
 import { Button } from "../ui/button";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import {
   Select,
@@ -16,12 +17,23 @@ import {
 } from "../ui/select";
 
 export default function CategoryForm() {
+  const queryClient = useQueryClient();
   const [selectedIcon, setSelectedIcon] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("#2563eb");
   const [state, action] = useFormState(createCategory, {
     success: false,
     message: "",
   });
+
+  // Invalidate categories query when form is successfully submitted
+  useEffect(() => {
+    if (state.success) {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+      // Reset form
+      setSelectedIcon("");
+      setSelectedColor("#2563eb");
+    }
+  }, [state.success, queryClient]);
 
   return (
     <form action={action}>
@@ -54,11 +66,7 @@ export default function CategoryForm() {
         <Field>
           <FieldLabel htmlFor="icon">Icon</FieldLabel>
           <input type="hidden" name="icon" value={selectedIcon} />
-          <Select
-            value={selectedIcon}
-            onValueChange={setSelectedIcon}
-            required
-          >
+          <Select value={selectedIcon} onValueChange={setSelectedIcon} required>
             <SelectTrigger>
               <SelectValue placeholder="Select an icon">
                 {selectedIcon && iconMap[selectedIcon] && (

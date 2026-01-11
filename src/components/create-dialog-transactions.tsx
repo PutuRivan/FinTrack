@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
 
@@ -16,6 +17,7 @@ export default function CreateDialogTransactions() {
         </Button>
       </DialogTrigger>
       <DialogContent>
+        <DialogTitle>Add Transaction</DialogTitle>
         <TransactionsForm />
       </DialogContent>
     </Dialog>
