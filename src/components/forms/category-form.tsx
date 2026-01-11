@@ -1,23 +1,7 @@
 "use client";
 
-import {
-  Briefcase,
-  Bus,
-  Car,
-  Coffee,
-  Film,
-  Gift,
-  Heart,
-  Home,
-  type LucideIcon,
-  Plane,
-  ShoppingCart,
-  TrendingDown,
-  TrendingUp,
-  Utensils,
-  Wallet,
-} from "lucide-react";
 import { useState } from "react";
+import { iconMap } from "@/lib/types/map";
 import { Button } from "../ui/button";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
@@ -30,22 +14,6 @@ import {
 } from "../ui/select";
 
 // Icon mapping
-const iconMap: Record<string, { icon: LucideIcon; label: string }> = {
-  wallet: { icon: Wallet, label: "Wallet" },
-  utensils: { icon: Utensils, label: "Utensils" },
-  home: { icon: Home, label: "Home" },
-  briefcase: { icon: Briefcase, label: "Briefcase" },
-  bus: { icon: Bus, label: "Bus" },
-  film: { icon: Film, label: "Film" },
-  "trending-up": { icon: TrendingUp, label: "Trending Up" },
-  "trending-down": { icon: TrendingDown, label: "Trending Down" },
-  "shopping-cart": { icon: ShoppingCart, label: "Shopping Cart" },
-  heart: { icon: Heart, label: "Heart" },
-  coffee: { icon: Coffee, label: "Coffee" },
-  car: { icon: Car, label: "Car" },
-  plane: { icon: Plane, label: "Plane" },
-  gift: { icon: Gift, label: "Gift" },
-};
 
 export default function CategoryForm() {
   const [selectedIcon, setSelectedIcon] = useState<string>("");
