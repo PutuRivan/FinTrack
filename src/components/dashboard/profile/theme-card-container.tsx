@@ -1,5 +1,6 @@
 "use client";
 
+import useTheme from "next-theme";
 import { useState } from "react";
 import { Label } from "recharts";
 import {
@@ -16,7 +17,7 @@ import {
 } from "./theme-card-option";
 
 export default function ThemeCardContainer() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const { theme, setTheme } = useTheme();
   return (
     <Card>
       <CardHeader>

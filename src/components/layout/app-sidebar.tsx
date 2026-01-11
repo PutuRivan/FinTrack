@@ -128,7 +128,7 @@ export function NavMain({
 export function NavUser() {
   const { data: user } = useProfile();
 
-  if (!user) redirect("/");
+  // if (!user?.id) redirect("/");
 
   return (
     <SidebarMenu>

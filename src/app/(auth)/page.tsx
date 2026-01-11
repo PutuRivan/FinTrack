@@ -64,7 +64,7 @@ export default function AuthPage() {
       </div>
 
       {/* Right Column */}
-      <div className="bg-primary relative hidden flex-col justify-between p-10 text-white lg:flex xl:p-20">
+      <div className="bg-primary dark:bg-primary/50 relative hidden flex-col justify-between p-10 text-white lg:flex xl:p-20">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-primary to-primary/10 opacity-50" />
 
         {/* Placeholder for top alignment if needed */}
@@ -82,13 +82,13 @@ export default function AuthPage() {
           </div>
 
           <div className="space-y-2 text-center">
-            <div className="inline-flex items-center rounded-full bg-primary/30 px-3 py-1 text-sm font-medium text-primary backdrop-blur-md border border-primary/30">
+            <div className="inline-flex items-center rounded-full bg-primary/30 dark:bg-primary/10 px-3 py-1 text-sm font-medium text-primary dark:text-foreground backdrop-blur-md border border-primary/30">
               New Feature: AI Insights
             </div>
             <blockquote className="text-3xl font-bold leading-tight tracking-tight md:text-4xl text-pretty">
               &quot;Master your money with clarity and confidence.&quot;
             </blockquote>
-            <p className="text-blue-100">
+            <p className="text-muted dark:text-muted-foreground">
               Join 50,000+ users tracking their net worth on FinTrack.
             </p>
           </div>
