@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { signIn } from "@/lib/actions";
+import { signInWithPassword } from "@/lib/actions";
 import { type LoginSchema, loginSchema } from "@/lib/schema";
 import { Button } from "../ui/button";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "../ui/field";
@@ -21,7 +21,7 @@ export default function LoginForm() {
     const formData = new FormData();
     formData.append("email", data.email);
     formData.append("password", data.password);
-    const response = await signIn(formData);
+    const response = await signInWithPassword(formData);
     console.log(response);
   });
 

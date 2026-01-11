@@ -9,7 +9,7 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import type * as React from "react";
 import {
   Sidebar,
@@ -25,13 +25,9 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useProfile } from "@/hooks/use-profile";
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   navMain: [
     {
       title: "Dashboard",
@@ -76,7 +72,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
@@ -129,15 +125,11 @@ export function NavMain({
   );
 }
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
+  const { data: user } = useProfile();
+
+  if (!user) redirect("/");
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -149,12 +141,12 @@ export function NavUser({
         >
           <Link href="/profile">
             <Avatar className="h-8 w-8 rounded-lg">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <AvatarImage src={user?.image} alt="Avatar Fallback" />
+              <AvatarFallback className="rounded-lg"> {user?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
+              <span className="truncate font-medium">{user?.name}</span>
+              <span className="truncate text-xs">{user?.email}</span>
             </div>
           </Link>
         </SidebarMenuButton>
@@ -162,3 +154,37 @@ export function NavUser({
     </SidebarMenu>
   );
 }
+
+// export function NavUser({
+//   user,
+// }: {
+//   user: {
+//     name: string;
+//     email: string;
+//     avatar: string;
+//   };
+// }) {
+//   return (
+//     <SidebarMenu>
+//       <SidebarMenuItem>
+//         <SidebarMenuButton
+//           tooltip="User"
+//           size="lg"
+//           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+//           asChild
+//         >
+//           <Link href="/profile">
+//             <Avatar className="h-8 w-8 rounded-lg">
+//               <AvatarImage src={user.avatar} alt={user.name} />
+//               <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+//             </Avatar>
+//             <div className="grid flex-1 text-left text-sm leading-tight">
+//               <span className="truncate font-medium">{user.name}</span>
+//               <span className="truncate text-xs">{user.email}</span>
+//             </div>
+//           </Link>
+//         </SidebarMenuButton>
+//       </SidebarMenuItem>
+//     </SidebarMenu>
+//   );
+// }

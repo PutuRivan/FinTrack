@@ -41,7 +41,7 @@ export async function signUp(formData: FormData) {
   }
 }
 
-export async function signIn(formData: FormData) {
+export async function signInWithPassword(formData: FormData) {
   const supabase = await createClient()
 
   const email = formData.get("email")?.toString()
@@ -69,3 +69,36 @@ export async function signIn(formData: FormData) {
   redirect("/home")
 }
 
+export async function signInWithGoogle() {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+  })
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    }
+  }
+}
+
+
+export async function getUser() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase.auth.getUser()
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    }
+  }
+
+  return {
+    success: true,
+    data,
+  }
+}
