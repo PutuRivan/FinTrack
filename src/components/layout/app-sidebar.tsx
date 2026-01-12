@@ -6,10 +6,10 @@ import {
   Handshake,
   LayoutDashboard,
   type LucideIcon,
-  Settings,
+  Wallet,
 } from "lucide-react";
 import Link from "next/link";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import type * as React from "react";
 import {
   Sidebar,
@@ -24,8 +24,8 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useProfile } from "@/hooks/use-profile";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const data = {
   navMain: [
@@ -44,14 +44,21 @@ const data = {
       url: "/categories",
       icon: Bookmark,
     },
+    {
+      title: "Wallets",
+      url: "/wallets",
+      icon: Wallet,
+    },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { open } = useSidebar()
+  const { open } = useSidebar();
   return (
     <Sidebar collapsible="icon" {...props}>
-      {!open && <SidebarTrigger className="lg:flex hidden mx-auto transition-all ease-in-out duration-300 my-2" />}
+      {!open && (
+        <SidebarTrigger className="lg:flex hidden mx-auto transition-all ease-in-out duration-300 my-2" />
+      )}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -142,7 +149,10 @@ export function NavUser() {
           <Link href="/profile">
             <Avatar className="h-8 w-8 rounded-lg">
               <AvatarImage src={user?.image} alt="Avatar Fallback" />
-              <AvatarFallback className="rounded-lg"> {user?.name?.charAt(0)?.toUpperCase()}</AvatarFallback>
+              <AvatarFallback className="rounded-lg">
+                {" "}
+                {user?.name?.charAt(0)?.toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
               <span className="truncate font-medium">{user?.name}</span>

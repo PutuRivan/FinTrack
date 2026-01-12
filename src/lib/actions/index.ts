@@ -188,3 +188,52 @@ export async function createTransaction(
     message: "Transaction created successfully",
   }
 }
+
+export async function createWallet(
+  _prevState: TFormState,
+  formData: FormData): Promise<TFormState> {
+  const supabase = await createClient();
+
+  const name = formData.get("name")?.toString();
+  const type = formData.get("type")?.toString();
+  const balance = formData.get("balance")?.toString();
+  const icon = formData.get("icon")?.toString();
+
+  if (!name || !type || !balance || !icon) {
+    return {
+      success: false,
+      message: "All fields are required",
+    };
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    };
+  }
+
+  const { error } = await supabase.from("wallets").insert({
+    name,
+    type,
+    icon,
+    balance,
+    user_id: user.id,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Wallet created successfully",
+  }
+}

@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Banknote,
   Book,
   Briefcase,
   Bus,
@@ -104,4 +105,16 @@ export const iconMap: Record<string, { icon: LucideIcon; label: string }> = {
   target: { icon: Target, label: "Goal" },
   "alert-triangle": { icon: AlertTriangle, label: "Emergency" },
   more: { icon: MoreHorizontal, label: "Other" },
+};
+
+export const walletIconMap: Record<string, { icon: LucideIcon, label: string }> = {
+  cash: { icon: Wallet, label: "Cash" },
+  bank: { icon: Banknote, label: "Bank" },
+  savings: { icon: PiggyBank, label: "Savings" },
+  "e-wallet": { icon: CreditCard, label: "E-Wallet" },
+};
+
+export const categoryIconMap: Record<string, { icon: LucideIcon, label: string }> = {
+  income: { icon: TrendingUp, label: "Income" },
+  expense: { icon: TrendingDown, label: "Expense" },
 };
