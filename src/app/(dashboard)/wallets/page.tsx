@@ -1,42 +1,16 @@
+"use client"
+
 import { MoveUpRight, PieChart } from "lucide-react";
 import CreateDialogWallet from "@/components/create-dialog-wallet";
 import InsightCard from "@/components/dashboard/wallets/insight-card";
 import WalletCard from "@/components/dashboard/wallets/wallet-card";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import StatsCard from "@/components/stats-card";
-
-const wallets = [
-  {
-    id: "1",
-    name: "Cash Wallet",
-    balance: 1250,
-    type: "cash",
-    icon: "Wallet",
-  },
-  {
-    id: "2",
-    name: "Main Bank Account",
-    balance: 12405.5,
-    type: "bank",
-    icon: "Landmark",
-  },
-  {
-    id: "3",
-    name: "HY Savings",
-    balance: 45000,
-    type: "bank",
-    icon: "PiggyBank",
-  },
-  {
-    id: "4",
-    name: "Crypto Wallet",
-    balance: 8210.45,
-    type: "e-wallet",
-    icon: "Bitcoin",
-  },
-];
+import { useWallets } from "@/hooks/use-wallet";
 
 export default function WalletsPage() {
+  const { data: wallets } = useWallets();
+
   return (
     <div className="flex flex-col gap-8 p-6">
       {/* Header */}
@@ -50,7 +24,7 @@ export default function WalletsPage() {
       {/* Summary Stats */}
       <div className="grid gap-6 md:grid-cols-3">
         <StatsCard
-          title="TOTAL NET WORTH"
+          title="Total Balance"
           value="$58,655.50"
           percentage="2.4%"
           trend="up"
@@ -58,7 +32,7 @@ export default function WalletsPage() {
           className="uppercase"
         />
         <StatsCard
-          title="MONTHLY SAVINGS"
+          title="Total Savings"
           value="$3,420.00"
           percentage="12%"
           trend="up"
@@ -66,7 +40,7 @@ export default function WalletsPage() {
           className="uppercase"
         />
         <StatsCard
-          title="ACTIVE BUDGETS"
+          title="Total Investments"
           value="6"
           percentage="Wallets used"
           trend="up"
@@ -82,8 +56,11 @@ export default function WalletsPage() {
         </div>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {wallets.map((wallet) => (
-            <WalletCard key={wallet.id} wallet={wallet} />
+          {wallets?.map((wallet) => (
+            <WalletCard
+              key={wallet.id}
+              wallet={wallet}
+            />
           ))}
         </div>
       </div>
