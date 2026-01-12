@@ -1,3 +1,5 @@
+"use client";
+
 import { LayoutGrid } from "lucide-react";
 import CreateDialogGoal from "@/components/create-dialog-goal";
 import GoalCard from "@/components/dashboard/goal/goal-card";
@@ -6,8 +8,11 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+import { useGoals } from "@/hooks/use-goals";
 
 export default function page() {
+  const { data: goals } = useGoals();
+
   return (
     <div className="flex flex-col gap-6 p-6 min-h-screen">
       <SidebarHeaderContent title="Goals" description="Manage your goals">
@@ -54,7 +59,9 @@ export default function page() {
           <h2 className="text-lg font-semibold">Your Goals</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <GoalCard />
+          {goals?.map((goal) => (
+            <GoalCard key={goal.id} goal={goal} />
+          ))}
         </div>
       </div>
     </div>

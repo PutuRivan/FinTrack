@@ -12,3 +12,13 @@ export function formatRupiah(amount: number): string {
     minimumFractionDigits: 0,
   }).format(amount);
 }
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+
+  return new Intl.DateTimeFormat("id-ID", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(date);
+}

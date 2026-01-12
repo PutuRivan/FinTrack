@@ -6,21 +6,26 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { formatRupiah } from "@/lib/utils";
+import type { TFinancialGoal } from "@/lib/types/schema";
+import { formatDate, formatRupiah } from "@/lib/utils";
 
-export default function GoalCard() {
+interface GoalCardProps {
+  goal: TFinancialGoal;
+}
+
+export default function GoalCard({ goal }: GoalCardProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-xl font-bold text-center">
-          Goal Name
+          {goal.name}
         </CardTitle>
-        <CardDescription>Target:Desember 2026</CardDescription>
+        <CardDescription>Target: {formatDate(goal.target_date)}</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between gap-2 text-muted-foreground mb-2">
           <span className="">
-            {formatRupiah(10000)}/{formatRupiah(15000)}
+            {formatRupiah(goal.current_amount)}/{formatRupiah(goal.target_amount)}
           </span>
           <span className="">{66}%</span>
         </div>
