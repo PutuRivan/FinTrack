@@ -237,3 +237,49 @@ export async function createWallet(
     message: "Wallet created successfully",
   }
 }
+
+export async function createGoal(_prevState: TFormState, formData: FormData): Promise<TFormState> {
+  const supabase = await createClient();
+
+  const name = formData.get("name")?.toString();
+  const amount = formData.get("amount")?.toString();
+  const targetDate = formData.get("targetDate")?.toString();
+
+  if (!name || !amount || !targetDate) {
+    return {
+      success: false,
+      message: "All fields are required",
+    };
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    };
+  }
+
+  const { error } = await supabase.from("financial_goals").insert({
+    name,
+    target_amount: amount,
+    target_date: targetDate,
+    status: "ongoing",
+    user_id: user.id,
+  });
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Goal created successfully",
+  }
+}

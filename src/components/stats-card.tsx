@@ -1,17 +1,17 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { cn } from "@/lib/utils"
-import { LucideIcon } from "lucide-react"
+import type { LucideIcon } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 interface StatsCardProps {
-  title: string
-  value: string
-  percentage?: string
-  trend?: "up" | "down"
-  icon?: LucideIcon
-  variant?: "header" | "content"
-  className?: string
-  iconClassName?: string
+  title: string;
+  value: string;
+  percentage?: string;
+  trend?: "up" | "down";
+  icon?: LucideIcon;
+  variant?: "header" | "content";
+  className?: string;
+  iconClassName?: string;
 }
 
 export default function StatsCard({
@@ -24,7 +24,7 @@ export default function StatsCard({
   className,
   iconClassName,
 }: StatsCardProps) {
-  const isUp = trend === "up"
+  const isUp = trend === "up";
 
   return (
     <Card>
@@ -36,9 +36,7 @@ export default function StatsCard({
             </div>
           )}
           {percentage && (
-            <Badge
-              variant={isUp ? "up" : "down"}
-            >
+            <Badge variant={isUp ? "up" : "down"}>
               {isUp ? "↗" : "↘"} {percentage}
             </Badge>
           )}
@@ -54,14 +52,10 @@ export default function StatsCard({
           <span className="text-2xl font-bold">{value}</span>
 
           {variant === "content" && percentage && (
-            <Badge
-              variant={isUp ? "up" : "down"}
-            >
-              {percentage}
-            </Badge>
+            <Badge variant={isUp ? "up" : "down"}>{percentage}</Badge>
           )}
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

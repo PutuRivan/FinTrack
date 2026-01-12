@@ -3,6 +3,7 @@
 import {
   Bookmark,
   GalleryVerticalEnd,
+  Goal,
   Handshake,
   LayoutDashboard,
   type LucideIcon,
@@ -49,6 +50,11 @@ const data = {
       url: "/wallets",
       icon: Wallet,
     },
+    {
+      title: "Goals",
+      url: "/goals",
+      icon: Goal,
+    }
   ],
 };
 
