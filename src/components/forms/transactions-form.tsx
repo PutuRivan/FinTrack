@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useFormState } from "react-dom";
 import { useCategories } from "@/hooks/use-category";
+import { useWallets } from "@/hooks/use-wallet";
 import { createTransaction } from "@/lib/actions";
-import { iconMap } from "@/lib/types/map";
-import type { TCategoriesResponse } from "@/lib/types/response";
+import { iconMap, walletIconMap } from "@/lib/types/map";
 import { Button } from "../ui/button";
 import { Field, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
@@ -16,20 +16,15 @@ import {
 } from "../ui/select";
 
 export default function TransactionsForm() {
-  const { data } = useCategories();
+  const { data: categories } = useCategories();
+  const { data: wallets } = useWallets();
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedWallet, setSelectedWallet] = useState<string>("");
   const [selectedType, setSelectedType] = useState<string>("");
-  const [categories, setCategories] = useState<TCategoriesResponse[]>([]);
   const [state, action] = useFormState(createTransaction, {
     success: false,
     message: "",
   });
-
-  useEffect(() => {
-    if (data) {
-      setCategories(data);
-    }
-  }, [data]);
 
   return (
     <form action={action}>
@@ -51,7 +46,7 @@ export default function TransactionsForm() {
         {/* Amount */}
         <Field>
           <FieldLabel htmlFor="amount">Amount</FieldLabel>
-          <Input id="amount" type="number" placeholder="Enter Amount" />
+          <Input id="amount" type="number" name="amount" placeholder="Enter Amount" />
         </Field>
         {/* Category */}
         <Field>
@@ -62,7 +57,7 @@ export default function TransactionsForm() {
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              {categories.map((category) => {
+              {categories?.map((category) => {
                 const IconComponent =
                   category.icon && iconMap[category.icon]
                     ? iconMap[category.icon].icon
@@ -86,15 +81,43 @@ export default function TransactionsForm() {
             </SelectContent>
           </Select>
         </Field>
+        {/* Wallets */}
+        <Field>
+          <FieldLabel htmlFor="wallet">Wallet</FieldLabel>
+          <input type="hidden" name="wallet" value={selectedWallet} />
+          <Select value={selectedWallet} onValueChange={setSelectedWallet}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {wallets?.map((wallet) => {
+                const IconComponent =
+                  wallet.icon && walletIconMap[wallet.icon]
+                    ? walletIconMap[wallet.icon].icon
+                    : null;
+                return (
+                  <SelectItem
+                    key={wallet.id}
+                    value={wallet.id}
+                    onSelect={() => setSelectedWallet(wallet.id)}
+                  >
+                    {IconComponent && <IconComponent size={20} />}
+                    {wallet.name}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </Field>
         {/* Date */}
         <Field>
           <FieldLabel htmlFor="date">Date</FieldLabel>
-          <Input id="date" type="date" placeholder="Enter Date" />
+          <Input id="date" type="date" name="date" placeholder="Enter Date" />
         </Field>
         {/* Description */}
         <Field>
           <FieldLabel htmlFor="description">Description</FieldLabel>
-          <Input id="description" type="text" placeholder="Enter Description" />
+          <Input id="description" type="text" name="description" placeholder="Enter Description" />
         </Field>
         {state.success ? (
           <p className="text-green-500">{state.message}</p>

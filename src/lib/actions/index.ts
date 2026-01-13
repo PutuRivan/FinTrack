@@ -144,10 +144,11 @@ export async function createTransaction(
   const category = formData.get("category")?.toString();
   const date = formData.get("date")?.toString();
   const description = formData.get("description")?.toString();
+  const wallet = formData.get("wallet")?.toString();
 
-  console.log({ type, amount, category, date, description });
+  console.log({ type, amount, category, date, description, wallet });
 
-  if (!type || !amount || !category || !date || !description) {
+  if (!type || !amount || !category || !date || !description || !wallet) {
     return {
       success: false,
       message: "All fields are required",
@@ -168,12 +169,13 @@ export async function createTransaction(
   const { error } = await supabase
     .from("transactions")
     .insert({
+      user_id: user.id,
+      wallet_id: wallet,
+      category_id: category,
       type,
       amount,
-      category_id: category,
-      date,
       description,
-      user_id: user.id,
+      transaction_date: date,
     });
 
   if (error) {
