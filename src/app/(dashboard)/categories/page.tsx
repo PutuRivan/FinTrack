@@ -2,8 +2,8 @@
 
 import { LayoutGrid, Search, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
-import CreateDialogCategory from "@/components/create-dialog-category";
 import CategoriesTable from "@/components/dashboard/categories/categories-table";
+import CreateDialogCategory from "@/components/dialog/create/create-dialog-category";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
-import TransactionsForm from "./forms/transactions-form";
-import { Button } from "./ui/button";
+import TransactionsForm from "../../forms/transactions-form";
+import { Button } from "../../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../../ui/dialog";
 
 export default function CreateDialogTransactions() {
   return (

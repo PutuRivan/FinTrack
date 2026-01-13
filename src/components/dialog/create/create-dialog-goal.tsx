@@ -1,12 +1,12 @@
 import { Plus } from "lucide-react";
-import GoalForm from "./forms/goal-form";
-import { Button } from "./ui/button";
+import GoalForm from "../../forms/goal-form";
+import { Button } from "../../ui/button";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
-} from "./ui/dialog";
+} from "../../ui/dialog";
 
 export default function CreateDialogGoal() {
   return (

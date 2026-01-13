@@ -1,18 +1,18 @@
 import { Plus } from "lucide-react";
-import WalletForm from "./forms/wallet-form";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import WalletForm from "../../forms/wallet-form";
+import { Button } from "../../ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../ui/dialog";
 
 export default function CreateDialogWallet() {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button>
-          <Plus className="mr-2 h-4 w-4" /> Add Category
+          <Plus className="mr-2 h-4 w-4" /> Add Wallet
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Add Category</DialogTitle>
+        <DialogTitle>Add Wallet</DialogTitle>
         <WalletForm />
       </DialogContent>
     </Dialog>

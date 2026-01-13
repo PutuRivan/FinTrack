@@ -1,15 +1,17 @@
-"use client"
+"use client";
 
 import { MoveUpRight, PieChart } from "lucide-react";
-import CreateDialogWallet from "@/components/create-dialog-wallet";
+import { usePathname } from "next/navigation";
 import InsightCard from "@/components/dashboard/wallets/insight-card";
 import WalletCard from "@/components/dashboard/wallets/wallet-card";
+import CreateDialogWallet from "@/components/dialog/create/create-dialog-wallet";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import StatsCard from "@/components/stats-card";
 import { useWallets } from "@/hooks/use-wallet";
 
 export default function WalletsPage() {
   const { data: wallets } = useWallets();
+  const pathname = usePathname();
 
   return (
     <div className="flex flex-col gap-8 p-6">
@@ -55,14 +57,26 @@ export default function WalletsPage() {
           <h2 className="text-lg font-semibold">Your Wallets</h2>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {wallets?.map((wallet) => (
-            <WalletCard
-              key={wallet.id}
-              wallet={wallet}
-            />
-          ))}
-        </div>
+        {wallets?.length === 0 ? (
+          <p className="text-center text-muted-foreground">
+            No wallets found.
+          </p>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {wallets?.map((wallet) => (
+              <WalletCard
+                key={wallet.id}
+                id={wallet.id}
+                name={wallet.name}
+                type={wallet.type}
+                balance={wallet.balance}
+                icon={wallet.icon}
+                rek={wallet.rek}
+                pathname={pathname}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Quick Insights */}

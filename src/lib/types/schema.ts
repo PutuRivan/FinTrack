@@ -19,6 +19,7 @@ export type TWallets = {
   balance: number
   type: TWalletType
   icon: string
+  rek: string
   created_at: string
   updated_at: string
 }

@@ -19,6 +19,7 @@ export async function GET() {
       balance,
       type,
       icon,
+      rek,
       created_at
     `)
     .eq("user_id", authData.user.id)

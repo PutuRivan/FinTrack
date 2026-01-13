@@ -1,11 +1,11 @@
 "use client";
 
 import { Briefcase, Film, Music, Plus, ShoppingCart, Zap } from "lucide-react";
-import CreateDialogTransactions from "@/components/create-dialog-transactions";
 import TransactionFilterContainer from "@/components/dashboard/transactions/transactions-filter-container";
 import TransactionTableContainer, {
   type Transaction,
 } from "@/components/dashboard/transactions/transactions-table-container";
+import CreateDialogTransactions from "@/components/dialog/create/create-dialog-transactions";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
 import StatsCard from "@/components/stats-card";
 import { Button } from "@/components/ui/button";

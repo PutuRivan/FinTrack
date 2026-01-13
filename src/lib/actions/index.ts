@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "../supabase/server";
 import type { TFormState } from "../types/schema";
@@ -136,7 +137,8 @@ export async function createCategory(
 
 export async function createTransaction(
   _prevState: TFormState,
-  formData: FormData): Promise<TFormState> {
+  formData: FormData,
+): Promise<TFormState> {
   const supabase = await createClient();
 
   const type = formData.get("type")?.toString();
@@ -166,17 +168,15 @@ export async function createTransaction(
     };
   }
 
-  const { error } = await supabase
-    .from("transactions")
-    .insert({
-      user_id: user.id,
-      wallet_id: wallet,
-      category_id: category,
-      type,
-      amount,
-      description,
-      transaction_date: date,
-    });
+  const { error } = await supabase.from("transactions").insert({
+    user_id: user.id,
+    wallet_id: wallet,
+    category_id: category,
+    type,
+    amount,
+    description,
+    transaction_date: date,
+  });
 
   if (error) {
     return {
@@ -188,12 +188,13 @@ export async function createTransaction(
   return {
     success: true,
     message: "Transaction created successfully",
-  }
+  };
 }
 
 export async function createWallet(
   _prevState: TFormState,
-  formData: FormData): Promise<TFormState> {
+  formData: FormData,
+): Promise<TFormState> {
   const supabase = await createClient();
 
   const name = formData.get("name")?.toString();
@@ -237,10 +238,13 @@ export async function createWallet(
   return {
     success: true,
     message: "Wallet created successfully",
-  }
+  };
 }
 
-export async function createGoal(_prevState: TFormState, formData: FormData): Promise<TFormState> {
+export async function createGoal(
+  _prevState: TFormState,
+  formData: FormData,
+): Promise<TFormState> {
   const supabase = await createClient();
 
   const name = formData.get("name")?.toString();
@@ -283,5 +287,97 @@ export async function createGoal(_prevState: TFormState, formData: FormData): Pr
   return {
     success: true,
     message: "Goal created successfully",
+  };
+}
+
+export async function updateWallet(
+  _prevState: TFormState,
+  formData: FormData,
+): Promise<TFormState> {
+  const supabase = await createClient();
+
+  const id = formData.get("id")?.toString();
+  const name = formData.get("name")?.toString();
+  const type = formData.get("type")?.toString();
+  const balance = formData.get("balance")?.toString();
+  const icon = formData.get("icon")?.toString();
+  const rek = formData.get("rek")?.toString();
+
+  if (!id || !name || !type || !balance || !icon || !rek) {
+    return {
+      success: false,
+      message: "All fields are required",
+    };
   }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    };
+  }
+
+  const { error } = await supabase
+    .from("wallets")
+    .update({
+      name,
+      type,
+      icon,
+      balance,
+      rek,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  return {
+    success: true,
+    message: "Wallet updated successfully",
+  };
+}
+
+export async function deleteWallet(id: string, pathname: string): Promise<TFormState> {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return {
+      success: false,
+      message: "User not authenticated",
+    };
+  }
+
+  const { error } = await supabase
+    .from("wallets")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user.id);
+
+  if (error) {
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+
+  revalidatePath(pathname);
+
+  return {
+    success: true,
+    message: "Wallet deleted successfully",
+  };
 }

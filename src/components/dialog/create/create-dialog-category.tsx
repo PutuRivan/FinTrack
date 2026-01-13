@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
-import CategoryForm from "./forms/category-form";
-import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./ui/dialog";
+import CategoryForm from "../../forms/category-form";
+import { Button } from "../../ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../ui/dialog";
 
 export default function CreateDialogCategory() {
   return (

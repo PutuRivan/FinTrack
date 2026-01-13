@@ -1,13 +1,10 @@
 "use client";
 
 import { LayoutGrid } from "lucide-react";
-import CreateDialogGoal from "@/components/create-dialog-goal";
 import GoalCard from "@/components/dashboard/goal/goal-card";
+import CreateDialogGoal from "@/components/dialog/create/create-dialog-goal";
 import SidebarHeaderContent from "@/components/layout/sidebar-header-content";
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { useGoals } from "@/hooks/use-goals";
 
 export default function page() {
