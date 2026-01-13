@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 interface StatsCardProps {
   title: string;
-  value: string;
+  value: string | undefined;
   percentage?: string;
   trend?: "up" | "down";
   icon?: LucideIcon;

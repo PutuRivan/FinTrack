@@ -25,9 +25,27 @@ export async function GET() {
     .eq("user_id", authData.user.id)
     .order("created_at", { ascending: false });
 
+  // Calculation
+  const totalWallets = data?.length || 0;
+
+  const totalBalance = data?.reduce(
+    (sum, wallet) => sum + Number(wallet.balance),
+    0
+  );
+
+  const totalSavings = data?.filter(wallet => wallet.type === "savings")
+    .reduce((sum, wallet) => sum + Number(wallet.balance), 0);
+
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data);
+  return NextResponse.json({
+    data: data,
+    summary: {
+      total_wallet: totalWallets,
+      total_balance: totalBalance,
+      total_savings: totalSavings,
+    },
+  });
 }

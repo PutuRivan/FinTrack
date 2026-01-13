@@ -1,9 +1,9 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import type { TWallets } from "@/lib/types/schema";
+import type { TWalletsResponse } from "@/lib/types/response";
 
-export async function fetchWallets(): Promise<TWallets[]> {
+export async function fetchWallets(): Promise<TWalletsResponse> {
   const response = await fetch("/api/wallets");
   const data = await response.json();
   return data;
