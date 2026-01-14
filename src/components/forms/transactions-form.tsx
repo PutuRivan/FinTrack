@@ -90,7 +90,7 @@ export default function TransactionsForm() {
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              {wallets?.map((wallet) => {
+              {wallets?.data.map((wallet) => {
                 const IconComponent =
                   wallet.icon && walletIconMap[wallet.icon]
                     ? walletIconMap[wallet.icon].icon
