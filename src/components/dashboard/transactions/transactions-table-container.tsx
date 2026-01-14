@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
 import { Wallet } from "lucide-react";
@@ -35,7 +36,8 @@ export const columns: ColumnDef<TTransactionWithRelations>[] = [
     accessorKey: "merchant",
     header: "Wallet / Description",
     cell: ({ row }) => {
-      const Icon = walletIconMap[row.original.wallets?.icon || "cash"]?.icon || Wallet;
+      const Icon =
+        walletIconMap[row.original.wallets?.icon || "cash"]?.icon || Wallet;
 
       return (
         <div className="flex justify-center items-center gap-3">
@@ -55,7 +57,7 @@ export const columns: ColumnDef<TTransactionWithRelations>[] = [
 
       return (
         <Badge variant={"outline"}>
-          <Icon className="h-3 w-3 text-muted-foreground" />
+          <Icon className="h-3 w-3 text-muted-foreground mr-2" />
           <span>{categoryName}</span>
         </Badge>
       );
@@ -94,24 +96,52 @@ export const columns: ColumnDef<TTransactionWithRelations>[] = [
 
 interface TransactionTableContainerProps {
   data: TTransactionWithRelations[];
+  meta?: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  onPageChange: (page: number) => void;
 }
 
 export default function TransactionTableContainer({
   data,
+  meta,
+  onPageChange,
 }: TransactionTableContainerProps) {
   const [rowSelection, setRowSelection] = React.useState({});
+
+  const pagination = React.useMemo(
+    () => ({
+      pageIndex: (meta?.page || 1) - 1,
+      pageSize: meta?.limit || 10,
+    }),
+    [meta],
+  );
 
   const table = useReactTable({
     data,
     columns,
+    pageCount: meta?.totalPages || -1,
+    manualPagination: true,
+    state: {
+      rowSelection,
+      pagination,
+    },
+    onPaginationChange: (updater) => {
+      if (typeof updater === "function") {
+        const newState = updater(pagination);
+        onPageChange(newState.pageIndex + 1);
+      } else {
+        onPageChange(updater.pageIndex + 1);
+      }
+    },
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
-    state: {
-      rowSelection,
-    },
   });
 
   return (
@@ -122,9 +152,7 @@ export default function TransactionTableContainer({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead
-                    key={header.id}
-                  >
+                  <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
