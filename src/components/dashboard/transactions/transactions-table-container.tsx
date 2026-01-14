@@ -9,7 +9,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Briefcase, Music, Utensils, Zap } from "lucide-react";
+import { Wallet } from "lucide-react";
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -20,77 +20,50 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { iconMap, walletIconMap } from "@/lib/types/map";
+import type { TTransactionWithRelations } from "@/lib/types/response";
 import { formatRupiah } from "@/lib/utils";
 import { TablePagination } from "./table-pagination";
 
-// Define transaction type
-export type Transaction = {
-  id: string;
-  date: string;
-  merchant: string;
-  description: string;
-  category:
-  | "Entertainment"
-  | "Income"
-  | "Food & Drink"
-  | "Utilities"
-  | "Technology";
-  amount: number;
-  type: "Expense" | "Income";
-  icon: any;
-  iconColor: string;
-};
-
-export const columns: ColumnDef<Transaction>[] = [
+export const columns: ColumnDef<TTransactionWithRelations>[] = [
   {
-    accessorKey: "date",
-    header: "DATE",
-    cell: ({ row }) => (
-      <div className="text-muted-foreground">{row.getValue("date")}</div>
-    ),
+    accessorKey: "transaction_date",
+    header: "Date",
+    cell: ({ row }) => row.getValue("transaction_date"),
   },
   {
     accessorKey: "merchant",
-    header: "MERCHANT / DESCRIPTION",
+    header: "Wallet / Description",
     cell: ({ row }) => {
-      const Icon = row.original.icon;
+      const Icon = walletIconMap[row.original.wallets?.icon || "cash"]?.icon || Wallet;
+
       return (
-        <div className="flex items-center gap-3">
-          <div className={`p-2 rounded-full ${row.original.iconColor}`}>
-            <Icon className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="font-medium">{row.getValue("merchant")}</div>
-            <div className="text-xs text-muted-foreground">
-              {row.original.description}
-            </div>
-          </div>
+        <div className="flex justify-center items-center gap-3">
+          <Icon className="h-4 w-4" />
+          <span className="text-center">{row.original.description}</span>
         </div>
       );
     },
   },
   {
-    accessorKey: "category",
-    header: "CATEGORY",
+    accessorKey: "categories.name",
+    header: "Category",
     cell: ({ row }) => {
-      const category = row.getValue("category") as string;
-      let Icon = Briefcase;
-      if (category === "Entertainment") Icon = Music;
-      if (category === "Income") Icon = Briefcase;
-      if (category === "Food & Drink") Icon = Utensils;
-      if (category === "Utilities") Icon = Zap;
+      const categoryName = row.original.categories?.name || "Uncategorized";
+      const iconKey = row.original.categories?.icon || "more";
+      const Icon = iconMap[iconKey]?.icon || Wallet;
 
       return (
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-muted w-fit text-xs font-medium">
+        <Badge variant={"outline"}>
           <Icon className="h-3 w-3 text-muted-foreground" />
-          <span>{category}</span>
-        </div>
+          <span>{categoryName}</span>
+        </Badge>
       );
     },
   },
   {
     accessorKey: "amount",
-    header: "AMOUNT",
+    header: "Amount",
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const type = row.original.type;
@@ -98,9 +71,9 @@ export const columns: ColumnDef<Transaction>[] = [
 
       return (
         <div
-          className={`font-semibold ${type === "Income" ? "text-green-600" : ""}`}
+          className={`font-semibold ${type === "income" ? "text-green-600" : ""}`}
         >
-          {type === "Income" ? "+" : ""}
+          {type === "income" ? "+" : "-"}
           {formatted}
         </div>
       );
@@ -108,22 +81,19 @@ export const columns: ColumnDef<Transaction>[] = [
   },
   {
     accessorKey: "type",
-    header: "TYPE",
+    header: "Type",
     cell: ({ row }) => {
       const type = row.original.type;
+      const displayType = type.charAt(0).toUpperCase() + type.slice(1);
       return (
-        <Badge
-          variant={type === "Income" ? "up" : "down"}
-        >
-          {type}
-        </Badge>
+        <Badge variant={type === "income" ? "up" : "down"}>{displayType}</Badge>
       );
     },
   },
 ];
 
 interface TransactionTableContainerProps {
-  data: Transaction[];
+  data: TTransactionWithRelations[];
 }
 
 export default function TransactionTableContainer({
@@ -145,16 +115,15 @@ export default function TransactionTableContainer({
   });
 
   return (
-    <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+    <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-5">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-transparent">
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-xs uppercase font-semibold text-muted-foreground h-12"
                   >
                     {header.isPlaceholder
                       ? null
@@ -174,7 +143,6 @@ export default function TransactionTableContainer({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-16"
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>

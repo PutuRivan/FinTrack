@@ -45,7 +45,8 @@ export type TTransactions = {
   type: TCategoryType
   amount: number
   description: string
-  transaction_date: string
+  date: string
+  merchant: string
   created_at: string
 }
 
