@@ -61,28 +61,25 @@ export default function TransactionsPage() {
       >
         <CreateDialogTransactions />
       </SidebarHeaderContent>
-      
+
       {/* Summary Cards */}
       <div className="grid gap-6 md:grid-cols-3">
         {/* Placeholder cards */}
         <StatsCard
-          title="Total Balance"
-          value="$12,450.00"
-          percentage="+2.5%"
+          title="Total"
+          value={transactionData?.stats?.total_balance}
           trend="up"
           variant="content"
         />
         <StatsCard
-          title="Income (This Month)"
-          value="$5,400.00"
-          percentage="+10%"
+          title="Income"
+          value={transactionData?.stats?.income}
           trend="up"
           variant="content"
         />
         <StatsCard
-          title="Expenses (This Month)"
-          value="$2,150.00"
-          percentage="-10%"
+          title="Expenses"
+          value={transactionData?.stats?.expense}
           trend="down"
           variant="content"
         />

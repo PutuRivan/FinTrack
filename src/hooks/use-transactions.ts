@@ -20,6 +20,11 @@ export type TransactionResponse = {
     limit: number;
     totalPages: number;
   };
+  stats: {
+    total_balance: number;
+    income: number;
+    expense: number;
+  }
 };
 
 async function fetchTransactions(

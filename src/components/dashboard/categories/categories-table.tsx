@@ -27,7 +27,7 @@ import { formatRupiah } from "@/lib/utils";
 export const columns: ColumnDef<TCategoriesResponse>[] = [
   {
     accessorKey: "name",
-    header: "CATEGORY NAME",
+    header: "Category Name",
     cell: ({ row }) => {
       const IconComponent =
         row.original.icon && iconMap[row.original.icon]
@@ -51,7 +51,7 @@ export const columns: ColumnDef<TCategoriesResponse>[] = [
   },
   {
     accessorKey: "type",
-    header: "TYPE",
+    header: "Type",
     cell: ({ row }) => {
       const type = row.getValue("type") as string;
       return (
@@ -63,7 +63,7 @@ export const columns: ColumnDef<TCategoriesResponse>[] = [
   },
   {
     accessorKey: "total_amount",
-    header: "TOTAL AMOUNT",
+    header: "Total Amount",
     cell: ({ row }) => {
       const amount = row.getValue("total_amount") as number;
       const formatted = formatRupiah(amount);
@@ -98,16 +98,18 @@ export default function CategoriesTable({
   });
 
   return (
-    <div className="rounded-xl border bg-card text-card-foreground shadow-sm">
+    <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-5">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-transparent">
+            <TableRow
+              key={headerGroup.id}
+            >
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead
                     key={header.id}
-                    className="text-xs uppercase font-semibold text-muted-foreground h-12"
+                    className="text-start"
                   >
                     {header.isPlaceholder
                       ? null
@@ -126,7 +128,7 @@ export default function CategoriesTable({
             <TableRow>
               <TableCell
                 colSpan={columns.length}
-                className="h-24 text-center text-muted-foreground"
+                className="text-center"
               >
                 Loading categories...
               </TableCell>
@@ -136,10 +138,12 @@ export default function CategoriesTable({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
-                className="h-16"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className="text-start"
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
